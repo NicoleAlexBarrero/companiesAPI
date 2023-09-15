@@ -119,7 +119,7 @@ app.post('/api/companies', async (req, res) => {
       }
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: 'Failed to delete the company' });
+      res.status(204).end(); // .json({ error: 'Failed to delete the company' });
     }
   });
   
