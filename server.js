@@ -27,16 +27,6 @@ app.get('/', (req, res) => {
   res.json({ message: "API Listening" });
 });
 
-
-  // initialize before server starts 
-db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
-    app.listen(HTTP_PORT, ()=>{
-        console.log(`Server listening on: ${HTTP_PORT}`);
-    });
-}).catch((err)=>{
-    console.log(err);
-});
-
 // routes
 // POST add new company
 app.post('/api/companies', (req, res) => {
@@ -92,7 +82,16 @@ app.get('/api/companies', (req, res) => {
       res.status(204).end(); 
     })
   });
-  
+
+
+  // initialize before server starts 
+db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
+    app.listen(HTTP_PORT, ()=>{
+        console.log(`Server listening on: ${HTTP_PORT}`);
+    });
+}).catch((err)=>{
+    console.log(err);
+});
 
 
 
