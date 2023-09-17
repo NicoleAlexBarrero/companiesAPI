@@ -30,13 +30,16 @@ app.get('/', (req, res) => {
 // routes
 // POST add new company
 app.post('/api/companies', (req, res) => {
-      db.addNewCompany(req.body).then((data)=>{
-        res.status(201).json(data);
-    }) catch (err) {
+  db.addNewCompany(req.body)
+    .then((data) => {
+      res.status(201).json(data);
+    })
+    .catch((err) => {
       console.error(err);
       res.status(500).json({ error: 'Failed to add new company' });
-    }
-  });
+    });
+});
+
   
   // GET retrieve companies 
 app.get('/api/companies', (req, res) => {
