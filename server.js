@@ -10,122 +10,25 @@
 ********************************************************************************/ 
 
 const express = require('express');
-const cors = require('cors'); // importing cors package
-const CompaniesDB = require('./modules/companiesDB'); // import the companiesDB.js module
+const cors = require('cors');
+const CompaniesDB = require('./modules/companiesDB'); 
 const app = express();
 const HTTP_PORT = 8080;
 
-// import & configure "dotenv"
+
 require('dotenv').config();
-// initialize the companiesDB instance
 const db = new CompaniesDB();
 
-
-
-// use cors middleware before defining routes, this allows cross-origin requests to server
 app.use(cors()); 
 
-// use "express.json()" middleware to parse JSON in the request body
 app.use(express.json());
 
-// connect to MongoDB with connection string? //test?
-// MONGODB_CONN_STRING= 'mongodb+srv://nbarrero:Cqpxums1HqE3wUre@senecaweb.x5fzslg.mongodb.net/sample_training'
-
-
-
-
-// define a route for "/"
 app.get('/', (req, res) => {
   res.json({ message: "API Listening" });
 });
 
-// start server
-//app.listen(HTTP_PORT, () => {
-  //console.log(`Server is running on port ${HTTP_PORT}`);
-//});
 
-//add the routes
-
-// Define route handlers for your API
-// POST /api/companies - Add a new company
-app.post('/api/companies', async (req, res) => {
-    try {
-      const newData = req.body;
-      const result = await db.addNewCompany(newData);
-      res.status(201).json(result);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to add a new company' });
-    }
-  });
-  
-  // GET /api/companies - Retrieve companies with pagination and optional tag filter
-  app.get('/api/companies', async (req, res) => {
-    try {
-      const page = parseInt(req.query.page) || 1;
-      const perPage = parseInt(req.query.perPage) || 10;
-      const tag = req.query.tag || '';
-  
-      const companies = await db.getAllCompanies(page, perPage, tag);
-      res.json(companies);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to retrieve companies' });
-    }
-  });
-  
-  // GET /api/company/:name - Retrieve a specific company by name
-  app.get('/api/company/:name', async (req, res) => {
-    try {
-      const name = req.params.name;
-      const company = await db.getCompanyByName(name);
-      if (!company) {
-        res.status(204).json({ error: 'Company not found' });
-      } else {
-        res.json(company);
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to retrieve the company' });
-    }
-  });
-  
-  // PUT /api/company/:name - Update a specific company by name
-  app.put('/api/company/:name', async (req, res) => {
-    try {
-      const name = req.params.name;
-      const newData = req.body;
-      const result = await db.updateCompanyByName(newData, name);
-      if (!result) {
-        res.status(204).json({ error: 'Company not found' });
-      } else {
-        res.json({ message: 'Company updated successfully' });
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to update the company' });
-    }
-  });
-  
-  // DELETE /api/company/:name - Delete a specific company by name
-  app.delete('/api/company/:name', async (req, res) => {
-    try {
-      const name = req.params.name;
-      const result = await db.deleteCompanyByName(name);
-      if (!result) {
-        res.status(204).json({ error: 'Company not found' });
-      } else {
-        res.json({ message: 'Company deleted successfully' });
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(204).end(); // .json({ error: 'Failed to delete the company' });
-    }
-  });
-  
-
-
-  // initialize module before server starts  //move?
+  // initialize before server starts 
 db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
     app.listen(HTTP_PORT, ()=>{
         console.log(`Server listening on: ${HTTP_PORT}`);
@@ -133,4 +36,63 @@ db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
 }).catch((err)=>{
     console.log(err);
 });
+
+// routes
+// POST add new company
+app.post('/api/companies', (req, res) => {
+      db.addNewCompany(req.body).then((data)=>{
+        res.status(201).json(data);
+    }) catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Failed to add new company' });
+    }
+  });
+  
+  // GET retrieve companies 
+app.get('/api/companies', (req, res) => {
+  const page = parseInt(req.query.page) || 1; //default to 1 
+  const perPage = parseInt(req.query.perPage) || 10;
+  const tag = req.query.tag || '';
+
+  db.getAllCompanies(page, perPage, tag)
+    .then((companies) => {
+      res.json(companies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json(err);
+    });
+});
+
+  
+  // GET retrieve a company by 
+  app.get('/api/company/:name', (req, res) => {
+   db.getCompanyByName(req.params.name).then((data)=> {
+        console.log("Company retrieved");
+        res.status(200).json(data);
+      }).catch((err)=>{
+          res.status(500).json({ error: 'Failed to retrieve company' });
+      })
+  });
+  
+  // PUT update a company
+  app.put('/api/company/:name', (req, res) => {
+      db.updateCompanyByName(req.body, req.params.name).then((data)=> {
+        res.status(200).json(data);
+    }).catch((err)=>{
+        res.status(500).json({ error: 'Failed to update the company' });
+    })
+  });
+  
+  // DELETE celete company
+  app.delete('/api/company/:name', (req, res) => {
+  db.deleteCompanyByName(req.params.name).then((data) => {
+      res.status(200).json(data);
+    }).catch((err)=>{
+      res.status(204).end(); 
+    })
+  });
+  
+
+
 
