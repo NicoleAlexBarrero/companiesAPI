@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nicole Barrero</title>
+
+    <!-- Bootstrap Minified CSS via CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- main.css file -->
+    <link rel="stylesheet" href="main.css">
+
+    <!-- Bootstrap Minified JS via CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<!-- HTML content -->
+<!-- Navbar -->
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Nicole Barrero - Company Data</a> 
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <!-- Search Form -->
+            <form class="form-inline" id="searchForm">
+                <input class="form-control" type="text" placeholder="tag (case insensitive)" id="tag">
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn btn-secondary" type="button" id="clearForm">Clear</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <table class="table" id="companiesTable">
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Founded</th>
+                    <th>Founders (1)</th>
+                    <th>Offices (1)</th>
+                    <th># of Employees</th>
+                    <th>Tags (2)</th>
+                    <th>Website</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#"></a></li>
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+
+
+<!-- Modal window -->
+<!--data-bs-toggle="modal" data-bs-target="#exampleModal-->
+  <div class="modal fade" tabindex="-1" id="detailsModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- main.js file -->
+<script src="main.js"></script>
+</body>
+</html>
